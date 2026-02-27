@@ -70,8 +70,7 @@ def complete_lesson(request, lesson_id):
             )
             
             # اضافه کردن XP به کاربر
-            request.user.xp += lesson.xp_reward
-            request.user.save()
+            request.user.add_xp(lesson.xp_reward)
             
             # چک کن آیا همه درس‌های دوره تموم شده
             course = lesson.course
@@ -81,8 +80,7 @@ def complete_lesson(request, lesson_id):
             ).count()
             
             if completed_lessons == total_lessons:
-                request.user.xp += course.xp_reward
-                request.user.save()
+                request.user.add_xp(course.xp_reward)
                 messages.success(
                     request,
                     f"دوره '{course.title}' رو کامل کردی! +{course.xp_reward} XP جایزه کل گرفتی! 🎉"

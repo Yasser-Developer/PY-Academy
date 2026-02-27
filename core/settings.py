@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,13 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i0r+&#-=exx!3p@lwf9s56(d&l6=2nrp0#6kmu4&o@@vo(_udl'
+DEBUG = os.environ.get("DJANGO_DEBUG", "1") in ("1", "true", "True", "yes", "YES")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-dev-only-change-me")
+if not DEBUG and SECRET_KEY == "django-insecure-dev-only-change-me":
+    raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set in production.")
 
-ALLOWED_HOSTS = []
+allowed_hosts_raw = os.environ.get("DJANGO_ALLOWED_HOSTS", "")
+ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_raw.split(",") if h.strip()]
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -142,3 +145,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 LOGIN_REDIRECT_URL = '/dashboard/'  # بعد از ورود به داشبورد برو
+
+# Production security toggles (enable with DJANGO_SECURE=1)
+SECURE_MODE = os.environ.get("DJANGO_SECURE", "0") in ("1", "true", "True", "yes", "YES")
+if SECURE_MODE:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_HSTS_SECONDS", "31536000"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True

@@ -2,8 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from .models import GameChallenge
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-import sys
-from io import StringIO
+from django.contrib.auth.decorators import login_required
+
+from .models import CompletedGame
+from .safe_runner import run_user_code
 
 
 def game_list(request):
@@ -17,28 +19,25 @@ def game_detail(request, game_id):
 
 
 @require_POST
+@login_required
 def run_game_code(request, game_id):
     code = request.POST.get('code', '')
     game = get_object_or_404(GameChallenge, pk=game_id)
 
-    old_stdout = sys.stdout
-    redirected_output = sys.stdout = StringIO()
-
-    try:
-        exec(code)
-        output = redirected_output.getvalue()
-        success = True
-    except Exception as e:
-        output = str(e)
-        success = False
-    finally:
-        sys.stdout = old_stdout
+    result = run_user_code(code, timeout_seconds=2)
 
     # اگر موفق بود، XP بده (فقط یک بار برای هر بازی)
-    if success and not request.user.completed_games.filter(game=game).exists():
-        from .models import CompletedGame  # بعداً مدل رو اضافه می‌کنیم
+    xp_awarded = False
+    if result.success and not request.user.completed_games.filter(game=game).exists():
         CompletedGame.objects.create(user=request.user, game=game, xp_earned=game.xp_reward)
-        request.user.xp += game.xp_reward
-        request.user.save()
+        request.user.add_xp(game.xp_reward)
+        xp_awarded = True
 
-    return JsonResponse({'output': output, 'success': success})
+    return JsonResponse(
+        {
+            'output': result.output,
+            'success': result.success,
+            'xp_awarded': xp_awarded,
+            'xp_amount': game.xp_reward if xp_awarded else 0,
+        }
+    )
