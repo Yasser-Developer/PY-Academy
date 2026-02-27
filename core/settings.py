@@ -32,6 +32,15 @@ ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_raw.split(",") if h.strip()]
 if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
+# Site / contact (set in .env for real values)
+SITE_NAME = os.environ.get("SITE_NAME", "PY-Academy")
+SITE_TAGLINE = os.environ.get("SITE_TAGLINE", "آموزش پایتون برای بچه‌ها — درس، بازی، ویدیو")
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "info@pyacademy.ir")
+CONTACT_PHONE = os.environ.get("CONTACT_PHONE", "")
+CONTACT_INSTAGRAM = os.environ.get("CONTACT_INSTAGRAM", "")
+CONTACT_TELEGRAM = os.environ.get("CONTACT_TELEGRAM", "")
+CONTACT_ADDRESS = os.environ.get("CONTACT_ADDRESS", "")
+
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -77,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'pages.context_processors.site_contact',
             ],
         },
     },

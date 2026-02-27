@@ -20,10 +20,30 @@
             {{ game.description }}
         </p>
 
+        {% if game.instructions %}
+            <div class="bg-gray-900/70 backdrop-blur-xl p-8 rounded-3xl border border-indigo-700/30 shadow-2xl mb-8">
+                <h2 class="text-2xl font-bold text-indigo-300 mb-3">راهنمای بازی</h2>
+                <div class="text-gray-300 leading-relaxed">
+                    {{ game.instructions|linebreaks }}
+                </div>
+                {% if game.hints %}
+                    <div class="mt-6 bg-black/30 border border-gray-800 rounded-2xl p-5">
+                        <div class="text-yellow-300 font-bold mb-2">راهنمایی</div>
+                        <div class="text-gray-200">{{ game.hints|linebreaks }}</div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
         <div class="bg-gray-900/70 backdrop-blur-xl p-8 rounded-3xl border border-gray-700 shadow-2xl">
-            <h2 class="text-3xl font-bold text-blue-400 mb-6">
-                کد بازی رو تغییر بده و ران کن
-            </h2>
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <h2 class="text-3xl font-bold text-blue-400">
+                    کد رو تغییر بده و حلش کن
+                </h2>
+                <div class="text-sm text-gray-300 bg-black/30 border border-gray-800 rounded-2xl px-4 py-2">
+                    سختی: {{ game.difficulty }} / 5
+                </div>
+            </div>
 
             <!-- ادیتور کد -->
             <textarea id="codeEditor" class="w-full h-64 p-4 bg-gray-800 border border-gray-700 text-white font-mono text-sm rounded-lg resize-y">
@@ -76,8 +96,15 @@
                     }
                     outputDiv.innerHTML = html;
                 } else {
-                    outputDiv.innerHTML = '<pre class="text-red-400">' + data.output + '</pre>' +
-                        '<p class="text-red-400 mt-4">ارور! کد رو چک کن.</p>';
+                    let html = '<pre class="text-red-300">' + data.output + '</pre>' +
+                        '<p class="text-red-300 mt-4 font-bold">هنوز حل نشده. خروجی رو دقیقاً مثل نمونه درست کن.</p>';
+                    if (data.expected_output) {
+                        html += '<div class="mt-6 bg-gray-950 border border-gray-800 rounded-2xl p-5">' +
+                            '<div class="text-gray-300 font-bold mb-2">خروجی مورد انتظار:</div>' +
+                            '<pre class="text-green-300 whitespace-pre-wrap">' + data.expected_output + '</pre>' +
+                            '</div>';
+                    }
+                    outputDiv.innerHTML = html;
                 }
             })
             .catch(error => {

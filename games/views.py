@@ -9,7 +9,7 @@ from .safe_runner import run_user_code
 
 
 def game_list(request):
-    games = GameChallenge.objects.all()
+    games = GameChallenge.objects.filter(is_active=True).order_by("difficulty", "id")
     return render(request, 'games/game_list.html', {'games': games})
 
 
@@ -26,9 +26,17 @@ def run_game_code(request, game_id):
 
     result = run_user_code(code, timeout_seconds=2)
 
-    # اگر موفق بود، XP بده (فقط یک بار برای هر بازی)
+    def norm(s: str) -> str:
+        return "\n".join([line.rstrip() for line in (s or "").replace("\r\n", "\n").strip().split("\n")]).strip()
+
+    expected = norm(game.expected_output)
+    actual = norm(result.output)
+
+    passed = bool(result.success) and (expected == "" or actual == expected)
+
+    # اگر پاس شد، XP بده (فقط یک بار برای هر بازی)
     xp_awarded = False
-    if result.success and not request.user.completed_games.filter(game=game).exists():
+    if passed and not request.user.completed_games.filter(game=game).exists():
         CompletedGame.objects.create(user=request.user, game=game, xp_earned=game.xp_reward)
         request.user.add_xp(game.xp_reward)
         xp_awarded = True
@@ -36,8 +44,9 @@ def run_game_code(request, game_id):
     return JsonResponse(
         {
             'output': result.output,
-            'success': result.success,
+            'success': passed,
             'xp_awarded': xp_awarded,
             'xp_amount': game.xp_reward if xp_awarded else 0,
+            'expected_output': game.expected_output,
         }
     )
