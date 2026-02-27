@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} - PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-12">
+        <!-- هدر دوره با عکس و گرادیانت -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-950 via-purple-950 to-gray-950 shadow-2xl border border-indigo-700/40">
+            {% if course.image %}
+                <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-full h-72 md:h-96 object-cover opacity-70">
+            {% endif %}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div class="relative p-8 md:p-12">
+                <a href="{% url 'course_list' %}" class="text-indigo-300 hover:text-indigo-200 mb-4 inline-block text-lg font-medium transition-colors">
+                    ← بازگشت به لیست دوره‌ها
+                </a>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-2xl">
+                    {{ course.title }}
+                </h1>
+                <p class="text-xl text-indigo-200 mb-8 max-w-3xl">
+                    {{ course.description }}
+                </p>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 text-lg text-gray-300">
+                    <span class="font-bold text-indigo-400">جایزه کل: {{ course.xp_reward }} XP</span>
+                    <span>پیشرفت شما: {{ progress|floatformat:0 }}% ({{ completed_count }} از {{ total_lessons }} درس)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوار پیشرفت -->
+        <div class="bg-gray-900/70 backdrop-blur-xl p-10 rounded-3xl border border-indigo-700/30 shadow-2xl">
+            <h3 class="text-3xl font-bold text-center text-indigo-300 mb-8">
+                پیشرفت شما در این دوره
+            </h3>
+            <div class="relative pt-2">
+                <div class="overflow-hidden h-8 mb-6 text-xs flex rounded-full bg-gray-950 border border-gray-800 shadow-inner">
+                    <div style="width: {{ progress }}%" class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-full transition-all duration-1000 ease-out flex items-center justify-center font-bold text-white text-lg shadow-lg">
+                        {{ progress|floatformat:0 }}%
+                    </div>
+                </div>
+                <div class="flex justify-between text-gray-300 text-xl font-medium">
+                    <span>درس کامل‌شده: {{ completed_count }} از {{ total_lessons }}</span>
+                    <span>جایزه باقی‌مانده: {{ course.xp_reward }} XP</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- لیست درس‌ها -->
+        <h2 class="text-4xl font-bold text-center text-white mb-10">
+            درس‌های دوره
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for lesson in lessons %}
+                <div class="group bg-gray-900/70 backdrop-blur-xl rounded-3xl overflow-hidden border {% if lesson.id in completed_ids %}border-green-700/50{% else %}border-gray-700{% endif %} shadow-xl hover:border-indigo-500 hover:shadow-2xl transition-all duration-300">
+                    <div class="p-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white text-2xl font-bold group-hover:bg-indigo-500 transition-colors">
+                                {{ forloop.counter }}
+                            </div>
+                            <h3 class="text-2xl font-bold text-white group-hover:text-indigo-300 transition-colors">
+                                {{ lesson.title }}
+                            </h3>
+                        </div>
+                        <p class="text-gray-300 mb-6 line-clamp-3">
+                            {{ lesson.content|truncatewords:30 }}
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-indigo-400 font-bold">
+                                جایزه: {{ lesson.xp_reward }} XP
+                            </span>
+                            {% if lesson.id in completed_ids %}
+                                <span class="bg-green-600 text-white font-bold py-2 px-6 rounded-full text-sm">
+                                    کامل شده ✓
+                                </span>
+                            {% else %}
+                                <a href="{% url 'lesson_detail' lesson.id %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105">
+                                    شروع درس
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center text-gray-400 text-2xl col-span-full">
+                    هنوز درسی اضافه نشده! 😊
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- انیمیشن ساده -->
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+    </style>
+{% endblock %}

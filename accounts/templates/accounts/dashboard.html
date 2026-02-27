@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}داشبورد من - PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-12">
+        <!-- کارت خوش‌آمدگویی خفن -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-950 via-purple-950 to-gray-950 shadow-2xl border border-indigo-700/30">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(99,102,241,0.15),transparent_50%)]"></div>
+            <div class="relative p-8 md:p-12 flex flex-col md:flex-row items-center gap-10">
+                <!-- پروفایل با انیمیشن -->
+                <div class="relative group">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-indigo-500 shadow-2xl object-cover ring-8 ring-indigo-500/20 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out">
+                    {% else %}
+                        <div class="w-40 h-40 md:w-52 md:h-52 rounded-full bg-gradient-to-br from-indigo-700 to-purple-700 flex items-center justify-center text-white text-7xl md:text-9xl font-extrabold border-4 border-indigo-600 shadow-2xl ring-8 ring-indigo-600/20 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out">
+                            {{ user.username|slice:":1"|upper }}
+                        </div>
+                    {% endif %}
+                    <div class="absolute -bottom-4 -right-4 bg-gradient-to-r from-green-500 to-teal-500 text-white text-base font-bold px-5 py-2 rounded-full border-2 border-gray-900 shadow-lg transform group-hover:scale-110 transition-transform">
+                        سطح {{ level }}
+                    </div>
+                </div>
+
+                <!-- متن خوش‌آمدگویی -->
+                <div class="text-center md:text-left z-10">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-2xl animate-fade-in">
+                        خوش برگشتی {{ user.username }}!
+                    </h1>
+                    <p class="text-2xl text-indigo-300 mb-6 animate-fade-in-up delay-100">
+                        هدیه ثبت‌نام: <span class="text-yellow-400 font-bold animate-pulse">۵۰ XP</span> گرفتی!
+                    </p>
+                    <div class="text-lg text-gray-300 space-y-3 animate-fade-in-up delay-200">
+                        <p>ایمیل: {{ email }}</p>
+                        <p>موبایل: {{ phone }}</p>
+                        <p>عضو از: {{ register_date }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوار پیشرفت خفن -->
+        <div class="bg-gray-900/60 backdrop-blur-xl p-10 rounded-3xl border border-indigo-700/30 shadow-2xl">
+            <h3 class="text-3xl font-bold text-center text-indigo-300 mb-8">
+                پیشرفت تا سطح بعدی
+            </h3>
+            <div class="relative pt-2">
+                <div class="overflow-hidden h-8 mb-6 text-xs flex rounded-full bg-gray-950 border border-gray-800 shadow-inner">
+                    <div style="width: {{ progress }}%" class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-full transition-all duration-1000 ease-out flex items-center justify-center font-bold text-white text-lg shadow-lg">
+                        {{ progress|floatformat:0 }}%
+                    </div>
+                </div>
+                <div class="flex justify-between text-gray-300 text-xl font-medium">
+                    <span>سطح فعلی: {{ level }}</span>
+                    <span>تا سطح {{ level|add:1 }}: {{ xp_to_next }} XP مانده</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- کارت‌های آمار با hover خفن -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="group bg-gray-900/60 backdrop-blur-xl p-10 rounded-3xl border border-blue-700/30 shadow-xl hover:border-blue-500 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300">
+                <h3 class="text-2xl font-bold text-blue-400 mb-6 group-hover:text-blue-300 transition">
+                    امتیاز (XP)
+                </h3>
+                <p class="text-7xl font-extrabold text-white mb-4">{{ xp }}</p>
+                <p class="text-gray-400 text-xl">جمع کن تا بالاتر بری!</p>
+            </div>
+
+            <div class="group bg-gray-900/60 backdrop-blur-xl p-10 rounded-3xl border border-purple-700/30 shadow-xl hover:border-purple-500 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300">
+                <h3 class="text-2xl font-bold text-purple-400 mb-6 group-hover:text-purple-300 transition">
+                    سطح فعلی
+                </h3>
+                <p class="text-7xl font-extrabold text-white mb-4">سطح {{ level }}</p>
+                <p class="text-gray-400 text-xl">ادامه بده پاداش بگیر!</p>
+            </div>
+
+            <div class="group bg-gray-900/60 backdrop-blur-xl p-10 rounded-3xl border border-green-700/30 shadow-xl hover:border-green-500 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300">
+                <h3 class="text-2xl font-bold text-green-400 mb-6 group-hover:text-green-300 transition">
+                    وضعیت VIP
+                </h3>
+                <p class="text-6xl font-bold {% if is_vip %}text-green-400{% else %}text-gray-500{% endif %} mb-4">
+                    {% if is_vip %}فعال{% else %}غیرفعال{% endif %}
+                </p>
+                <p class="text-gray-400 text-xl">
+                    {% if is_vip %}دسترسی ویژه داری!{% else %}فعال کن و خفن‌تر شو{% endif %}
+                </p>
+            </div>
+        </div>
+
+        <!-- دکمه‌های عملی بزرگ و خفن -->
+        <div class="text-center mt-16">
+            <p class="text-4xl font-bold text-gray-100 mb-10 drop-shadow-lg">
+                حالا وقتشه بترکونی! 🔥
+            </p>
+            <div class="flex flex-col sm:flex-row gap-8 justify-center">
+                <a href="#" class="group relative inline-block overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-6 px-16 rounded-2xl text-2xl shadow-2xl transform hover:scale-110 transition-all duration-300">
+                    <span class="relative z-10">شروع درس جدید</span>
+                    <span class="absolute inset-0 bg-white/10 scale-0 group-hover:scale-150 rounded-full transition-transform duration-500"></span>
+                </a>
+
+                <a href="#" class="group relative inline-block overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-6 px-16 rounded-2xl text-2xl shadow-2xl transform hover:scale-110 transition-all duration-300">
+                    <span class="relative z-10">رقابت با کلاس</span>
+                    <span class="absolute inset-0 bg-white/10 scale-0 group-hover:scale-150 rounded-full transition-transform duration-500"></span>
+                </a>
+
+                <a href="#" class="group relative inline-block overflow-hidden bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-6 px-16 rounded-2xl text-2xl shadow-2xl transform hover:scale-110 transition-all duration-300">
+                    <span class="relative z-10">دیدن همه دوره‌ها</span>
+                    <span class="absolute inset-0 bg-white/10 scale-0 group-hover:scale-150 rounded-full transition-transform duration-500"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن fade-in ساده -->
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+    </style>
+{% endblock %}

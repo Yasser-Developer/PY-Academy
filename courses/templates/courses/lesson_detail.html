@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ lesson.title }} - {{ lesson.course.title }}{% endblock %}
+
+{% block content %}
+    <div class="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- هدر درس -->
+        <div class="bg-gradient-to-br from-indigo-950 to-purple-950 rounded-3xl shadow-2xl border border-indigo-700/40 overflow-hidden mb-12">
+            <div class="p-8 md:p-12">
+                <a href="{% url 'course_detail' lesson.course.id %}" class="text-indigo-400 hover:text-indigo-300 mb-4 inline-block">
+                    ← بازگشت به دوره {{ lesson.course.title }}
+                </a>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    {{ lesson.title }}
+                </h1>
+                <div class="flex items-center gap-6 text-lg text-gray-300 mb-8">
+                    <span class="font-bold text-indigo-400">جایزه درس: {{ lesson.xp_reward }} XP</span>
+                    {% if is_completed %}
+                        <span class="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                            کامل شده ✓
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوا و چالش -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- محتوای درس -->
+            <div class="bg-gray-900/60 backdrop-blur-xl p-8 rounded-3xl border border-gray-700 shadow-xl">
+                <h2 class="text-3xl font-bold text-indigo-300 mb-6">محتوای درس</h2>
+                <div class="prose prose-invert max-w-none text-gray-300">
+                    {{ lesson.content|linebreaks }}
+                </div>
+                {% if lesson.code_example %}
+                    <div class="mt-8">
+                        <h3 class="text-2xl font-bold text-white mb-4">کد نمونه</h3>
+                        <pre class="bg-gray-950 p-6 rounded-xl overflow-x-auto text-green-300 font-mono text-sm">
+<code>{{ lesson.code_example }}</code>
+                        </pre>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- چالش درس -->
+            <div class="bg-gray-900/60 backdrop-blur-xl p-8 rounded-3xl border border-gray-700 shadow-xl">
+                <h2 class="text-3xl font-bold text-purple-300 mb-6">چالش این درس</h2>
+                <p class="text-gray-300 mb-6">{{ lesson.challenge_description|linebreaks }}</p>
+                
+                {% if is_completed %}
+                    <div class="bg-green-900/50 border border-green-700 text-green-300 p-6 rounded-xl text-center font-bold text-xl">
+                        تبریک! این درس رو کامل کردی 🎉
+                    </div>
+                {% else %}
+                    <form method="post" action="{% url 'complete_lesson' lesson.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-5 px-10 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+                            کامل کردم! (دریافت {{ lesson.xp_reward }} XP)
+                        </button>
+                    </form>
+                    <p class="text-center text-gray-400 mt-4 text-sm">
+                        فقط یک بار می‌تونی XP این درس رو بگیری
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

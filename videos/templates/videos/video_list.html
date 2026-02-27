@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}ویدیوهای آموزشی - PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="max-w-7xl mx-auto py-16 px-6 lg:px-8">
+        <!-- عنوان جذاب -->
+        <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-6 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 bg-clip-text text-transparent">
+            آموزش پایتون با ویدیوهای حرفه‌ای
+        </h1>
+        <p class="text-xl text-center text-gray-300 mb-16 max-w-4xl mx-auto">
+            ویدیوهای رایگان و باکیفیت — همه داخل سایت پخش می‌شن، بدون خروج از PY-Academy
+        </p>
+
+        <!-- لیست ویدیوها -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for video in videos %}
+                <div class="group bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden border border-gray-700 shadow-2xl hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all duration-500 transform hover:-translate-y-3">
+                    <!-- بخش ویدیو -->
+                    <div class="relative aspect-video bg-black">
+                        {% if video.youtube_url %}
+                            <iframe 
+                                src="{{ video.youtube_url }}?autoplay=0&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&controls=1&fs=1"
+                                class="absolute inset-0 w-full h-full"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+                        {% else %}
+                            <div class="flex items-center justify-center h-full text-gray-400 text-xl">
+                                ویدیویی موجود نیست
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- اطلاعات زیر ویدیو -->
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">
+                            {{ video.title }}
+                        </h3>
+                        <p class="text-gray-300 mb-4 line-clamp-3">
+                            {{ video.description }}
+                        </p>
+                        <div class="flex items-center justify-between text-sm text-gray-400">
+                            <span>حداقل: {{ video.min_watch_seconds }} ثانیه</span>
+                            <span class="text-green-400 font-medium">جایزه: {{ video.xp_reward }} XP</span>
+                        </div>
+
+                        {% if user.is_authenticated %}
+                            {% if video.id in watched_ids %}
+                                <div class="mt-4 text-green-400 font-bold">
+                                    این ویدیو ثبت شد و XP گرفتی.
+                                </div>
+                            {% else %}
+                                <div class="mt-4 flex flex-wrap gap-3">
+                                    <form id="watch-form-{{ video.id }}" method="post" action="{% url 'video_mark_watched' video.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                                class="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold transition">
+                                            دیدم (+{{ video.xp_reward }} XP)
+                                        </button>
+                                    </form>
+
+                                    <button type="button"
+                                            data-watch-timer
+                                            data-seconds="{{ video.min_watch_seconds }}"
+                                            data-form="watch-form-{{ video.id }}"
+                                            class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition">
+                                        بعد از {{ video.min_watch_seconds }} ثانیه XP بده
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="mt-4 text-gray-300">
+                                برای گرفتن XP لطفاً <a class="text-indigo-300 underline" href="{% url 'login' %}">وارد</a> شو.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-span-full text-center py-20 text-gray-400 text-2xl">
+                    هنوز ویدیویی اضافه نشده!  
+                    <br>
+                    <a href="{% url 'admin:videos_educationalvideo_add' %}" class="text-purple-400 hover:text-purple-300 underline">
+                        در پنل ادمین ویدیو اضافه کن
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- استایل اضافی برای حرفه‌ای‌تر شدن -->
+    <style>
+        iframe { border-radius: 1.5rem; }
+        .aspect-video { aspect-ratio: 16 / 9; }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-watch-timer]').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    if (btn.dataset.running === '1') return;
+
+                    const seconds = parseInt(btn.dataset.seconds, 10) || 30;
+                    const formId = btn.dataset.form;
+
+                    btn.dataset.running = '1';
+                    btn.disabled = true;
+
+                    let remaining = seconds;
+                    btn.textContent = `در حال مشاهده... ${remaining} ثانیه`;
+
+                    const interval = setInterval(() => {
+                        remaining -= 1;
+                        if (remaining > 0) {
+                            btn.textContent = `در حال مشاهده... ${remaining} ثانیه`;
+                            return;
+                        }
+                        clearInterval(interval);
+
+                        const form = document.getElementById(formId);
+                        if (form) form.submit();
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ game.title }} - PY-Academy{% endblock %}
+
+{% block content %}
+    <!-- CSRF token رو اینجا می‌ذاریم تا JavaScript بتونه ازش استفاده کنه -->
+    {% csrf_token %}
+
+    <div class="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- بازگشت به لیست -->
+        <a href="{% url 'game_list' %}" class="text-indigo-400 hover:text-indigo-300 mb-6 inline-block text-lg font-medium">
+            ← بازگشت به لیست بازی‌ها
+        </a>
+
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-8 text-center">
+            {{ game.title }}
+        </h1>
+
+        <p class="text-xl text-gray-300 mb-10 text-center">
+            {{ game.description }}
+        </p>
+
+        <div class="bg-gray-900/70 backdrop-blur-xl p-8 rounded-3xl border border-gray-700 shadow-2xl">
+            <h2 class="text-3xl font-bold text-blue-400 mb-6">
+                کد بازی رو تغییر بده و ران کن
+            </h2>
+
+            <!-- ادیتور کد -->
+            <textarea id="codeEditor" class="w-full h-64 p-4 bg-gray-800 border border-gray-700 text-white font-mono text-sm rounded-lg resize-y">
+{{ game.code_template|default:"print('سلام! کد خودت رو اینجا بنویس')" }}
+            </textarea>
+
+            <div class="mt-6 text-center">
+                <button onclick="runCode()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    ران کن و نتیجه رو ببین
+                </button>
+            </div>
+
+            <!-- خروجی -->
+            <div id="output" class="mt-8 p-8 bg-black rounded-3xl border border-gray-700 min-h-[200px] text-white font-mono whitespace-pre-wrap">
+                نتیجه اینجا نمایش داده می‌شه...
+            </div>
+        </div>
+
+        <p class="text-center text-indigo-400 mt-8 text-xl font-bold">
+            جایزه این بازی: {{ game.xp_reward }} XP
+        </p>
+    </div>
+
+    <!-- اسکریپت AJAX برای ران کد -->
+    <script>
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = 'در حال ران کردن کد...';
+
+            // CSRF token رو از input مخفی می‌گیریم
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("{% url 'run_game_code' game.id %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken  // این مهمه!
+                },
+                body: 'code=' + encodeURIComponent(code)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    outputDiv.innerHTML = '<pre>' + data.output + '</pre>' +
+                        '<p class="text-green-400 mt-4">کد با موفقیت ران شد! +' + {{ game.xp_reward }} + ' XP گرفتی 🎉</p>';
+                } else {
+                    outputDiv.innerHTML = '<pre class="text-red-400">' + data.output + '</pre>' +
+                        '<p class="text-red-400 mt-4">ارور! کد رو چک کن.</p>';
+                }
+            })
+            .catch(error => {
+                outputDiv.innerHTML = '<p class="text-red-400">خطا در ارتباط با سرور: ' + error + '</p>';
+            });
+        }
+    </script>
+{% endblock %}

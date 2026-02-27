@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}صفحه اصلی - PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="text-center py-16 md:py-24">
+        <h1 class="text-5xl md:text-8xl font-extrabold mb-8 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 bg-clip-text text-transparent animate-fade-in">
+            خوش آمدی به PY-Academy!
+        </h1>
+        
+        <p class="text-xl md:text-3xl mb-16 text-gray-200 max-w-4xl mx-auto animate-fade-in-up delay-200">
+            پایتون رو مثل بازی یاد بگیر: XP جمع کن، سطح بالا برو، با کلاس‌ت رقابت کن و مدال بگیر!
+        </p>
+
+        <!-- دکمه‌های عملی -->
+        <div class="flex flex-col sm:flex-row gap-6 justify-center mb-24 animate-fade-in-up delay-400">
+            {% if user.is_authenticated %}
+                <a href="{% url 'course_list' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    شروع یادگیری و دوره‌ها
+                </a>
+                <a href="{% url 'dashboard' %}" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    داشبورد من
+                </a>
+            {% else %}
+                <a href="{% url 'register' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    همین حالا شروع کن (ثبت‌نام)
+                </a>
+                <a href="{% url 'login' %}" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    ورود
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- بخش "چرا PY-Academy؟" با کارت‌های ویژگی -->
+        <h2 class="text-4xl font-bold text-center mb-12 text-white">
+            چرا PY-Academy؟
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-indigo-500 hover:shadow-2xl transition-all duration-300">
+                <div class="text-5xl text-indigo-400 mb-4">📈</div>
+                <h3 class="text-2xl font-bold text-white mb-4">سیستم XP و سطح</h3>
+                <p class="text-gray-300">
+                    با هر درس XP جمع کن و سطح بالا برو!
+                </p>
+            </div>
+
+            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-purple-500 hover:shadow-2xl transition-all duration-300">
+                <div class="text-5xl text-purple-400 mb-4">🏆</div>
+                <h3 class="text-2xl font-bold text-white mb-4">رقابت کلاس</h3>
+                <p class="text-gray-300">
+                    با کلاس‌ت رقابت کن و بهترین باش!
+                </p>
+            </div>
+
+            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-green-500 hover:shadow-2xl transition-all duration-300">
+                <div class="text-5xl text-green-400 mb-4">🎖️</div>
+                <h3 class="text-2xl font-bold text-white mb-4">مدال و جایزه</h3>
+                <p class="text-gray-300">
+                    مدال بگیر و جوایز واقعی برنده شو!
+                </p>
+            </div>
+
+            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-yellow-500 hover:shadow-2xl transition-all duration-300">
+                <div class="text-5xl text-yellow-400 mb-4">🎮</div>
+                <h3 class="text-2xl font-bold text-white mb-4">آموزش با بازی</h3>
+                <p class="text-gray-300">
+                    چالش‌ها و بازی‌های کدینگ برای یادگیری بهتر!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن fade-in برای جذابیت -->
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-400 { animation-delay: 0.4s; }
+    </style>
+{% endblock %}
