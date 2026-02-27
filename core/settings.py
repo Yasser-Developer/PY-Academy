@@ -29,6 +29,8 @@ if not DEBUG and SECRET_KEY == "django-insecure-dev-only-change-me":
 
 allowed_hosts_raw = os.environ.get("DJANGO_ALLOWED_HOSTS", "")
 ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_raw.split(",") if h.strip()]
+if DEBUG and not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -49,6 +51,8 @@ INSTALLED_APPS = [
     'games',
     'videos',
     'competitions',
+    'pages',
+    'blog',
 ]
 
 MIDDLEWARE = [

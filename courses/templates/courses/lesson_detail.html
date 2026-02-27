@@ -32,20 +32,18 @@
                 <div class="prose prose-invert max-w-none text-gray-300">
                     {{ lesson.content|linebreaks }}
                 </div>
-                {% if lesson.code_example %}
-                    <div class="mt-8">
-                        <h3 class="text-2xl font-bold text-white mb-4">کد نمونه</h3>
-                        <pre class="bg-gray-950 p-6 rounded-xl overflow-x-auto text-green-300 font-mono text-sm">
-<code>{{ lesson.code_example }}</code>
-                        </pre>
-                    </div>
-                {% endif %}
             </div>
 
             <!-- چالش درس -->
             <div class="bg-gray-900/60 backdrop-blur-xl p-8 rounded-3xl border border-gray-700 shadow-xl">
                 <h2 class="text-3xl font-bold text-purple-300 mb-6">چالش این درس</h2>
-                <p class="text-gray-300 mb-6">{{ lesson.challenge_description|linebreaks }}</p>
+                {% if lesson.challenge %}
+                    <p class="text-gray-300 mb-6">{{ lesson.challenge|linebreaks }}</p>
+                {% else %}
+                    <p class="text-gray-400 mb-6">
+                        برای این درس فعلاً چالش ثبت نشده. (به‌زودی کامل‌تر می‌شه.)
+                    </p>
+                {% endif %}
                 
                 {% if is_completed %}
                     <div class="bg-green-900/50 border border-green-700 text-green-300 p-6 rounded-xl text-center font-bold text-xl">

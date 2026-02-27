@@ -72,6 +72,111 @@
             </div>
         </section>
 
+        <!-- شروع سریع: دوره‌ها -->
+        <section class="max-w-6xl mx-auto space-y-6">
+            <div class="flex items-end justify-between gap-4 flex-wrap">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">دوره‌های پیشنهادی</h2>
+                    <p class="text-gray-300 mt-2">از همینجا شروع کن و قدم‌به‌قدم جلو برو.</p>
+                </div>
+                <a href="{% url 'course_list' %}" class="nav-link text-indigo-300 font-semibold">مشاهده همه دوره‌ها ←</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for course in featured_courses %}
+                    <a href="{% url 'course_detail' course.id %}"
+                       class="group bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden border border-gray-700 shadow-2xl hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] transition-all duration-500 transform hover:-translate-y-2">
+                        <div class="p-7 space-y-3">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-blue-300 transition">
+                                {{ course.title }}
+                            </h3>
+                            <p class="text-gray-300 line-clamp-3">
+                                {{ course.description|truncatechars:180 }}
+                            </p>
+                            <div class="flex items-center justify-between text-sm text-gray-400">
+                                <span class="text-green-400 font-semibold">جایزه: {{ course.xp_reward }} XP</span>
+                                <span>شروع کن</span>
+                            </div>
+                        </div>
+                    </a>
+                {% empty %}
+                    <div class="col-span-full text-center text-gray-400 py-10">
+                        هنوز دوره‌ای اضافه نشده.
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- ویدیوهای کوتاه -->
+        <section class="max-w-6xl mx-auto space-y-6">
+            <div class="flex items-end justify-between gap-4 flex-wrap">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">ویدیوهای کوتاه</h2>
+                    <p class="text-gray-300 mt-2">برای هر موضوع، یک ویدیوی کوتاه ببین و XP بگیر.</p>
+                </div>
+                <a href="{% url 'video_list' %}" class="nav-link text-purple-300 font-semibold">مشاهده همه ویدیوها ←</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for video in latest_videos %}
+                    <div class="bg-gray-900/60 border border-gray-700 rounded-3xl overflow-hidden shadow-2xl">
+                        <div class="p-7 space-y-2">
+                            <div class="text-sm text-gray-400 flex items-center justify-between">
+                                <span>حداقل: {{ video.min_watch_seconds }} ثانیه</span>
+                                <span class="text-green-400 font-semibold">+{{ video.xp_reward }} XP</span>
+                            </div>
+                            <div class="text-xl font-bold text-white">{{ video.title }}</div>
+                            <p class="text-gray-300 line-clamp-2">{{ video.description|truncatechars:140 }}</p>
+                            <a href="{% url 'video_list' %}" class="inline-block mt-3 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold px-4 py-2 rounded-full">
+                                دیدن در صفحه ویدیوها
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-span-full text-center text-gray-400 py-10">
+                        هنوز ویدیویی اضافه نشده.
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- وبلاگ -->
+        <section class="max-w-6xl mx-auto space-y-6">
+            <div class="flex items-end justify-between gap-4 flex-wrap">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">مقاله‌های آموزشی</h2>
+                    <p class="text-gray-300 mt-2">راهنماهای کوتاه برای دانش‌آموزان و والدین.</p>
+                </div>
+                <a href="{% url 'blog_list' %}" class="nav-link text-indigo-300 font-semibold">رفتن به وبلاگ ←</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for post in latest_posts %}
+                    <a href="{{ post.get_absolute_url }}"
+                       class="group bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden border border-gray-700 shadow-2xl hover:shadow-[0_0_30px_rgba(99,102,241,0.35)] transition-all duration-500 transform hover:-translate-y-2">
+                        <div class="p-7 space-y-3">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-indigo-300 transition">
+                                {{ post.title }}
+                            </h3>
+                            {% if post.excerpt %}
+                                <p class="text-gray-300 line-clamp-3">{{ post.excerpt }}</p>
+                            {% else %}
+                                <p class="text-gray-400 line-clamp-3">{{ post.content|truncatechars:160 }}</p>
+                            {% endif %}
+                            <div class="text-sm text-gray-400 flex items-center justify-between">
+                                <span>مطالعه</span>
+                                <span>{{ post.published_at|date:"Y/m/d" }}</span>
+                            </div>
+                        </div>
+                    </a>
+                {% empty %}
+                    <div class="col-span-full text-center text-gray-400 py-10">
+                        هنوز مقاله‌ای منتشر نشده.
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
         <!-- برای والدین -->
         <section class="max-w-5xl mx-auto bg-gray-900/70 border border-gray-700 rounded-3xl p-8 md:p-10 shadow-2xl">
             <h2 class="text-2xl md:text-3xl font-bold text-white mb-6">

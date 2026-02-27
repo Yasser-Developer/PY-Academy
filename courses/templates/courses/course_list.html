@@ -7,6 +7,17 @@
         <h1 class="text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
             دوره‌های آموزشی
         </h1>
+        <div class="max-w-3xl mx-auto text-center text-gray-300 mb-10">
+            اگر تازه شروع می‌کنی، پیشنهاد می‌کنیم اول «مسیر یادگیری» رو ببینی و بعد از یک دوره مقدماتی شروع کنی.
+            <div class="mt-5 flex flex-wrap justify-center gap-3">
+                <a href="{% url 'learning_path' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-3 rounded-2xl">
+                    مسیر یادگیری
+                </a>
+                <a href="{% url 'blog_list' %}" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold px-5 py-3 rounded-2xl">
+                    وبلاگ و مقاله‌ها
+                </a>
+            </div>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for course in courses %}

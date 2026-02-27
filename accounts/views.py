@@ -7,6 +7,29 @@ from datetime import datetime
 from .models import CustomUser
 
 
+def home(request):
+    # Import lazily to avoid cross-app import issues at startup
+    from django.utils import timezone
+    from blog.models import Post
+    from courses.models import Course
+    from videos.models import EducationalVideo
+
+    now = timezone.now()
+    latest_posts = Post.objects.filter(is_published=True, published_at__lte=now)[:6]
+    featured_courses = Course.objects.filter(is_active=True)[:6]
+    latest_videos = EducationalVideo.objects.all()[:6]
+
+    return render(
+        request,
+        "accounts/index.html",
+        {
+            "latest_posts": latest_posts,
+            "featured_courses": featured_courses,
+            "latest_videos": latest_videos,
+        },
+    )
+
+
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST, request.FILES)

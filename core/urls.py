@@ -15,20 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView
-from accounts.views import register, user_logout, dashboard, leaderboard, learning_path
+from accounts.views import home, register, user_logout, dashboard, leaderboard, learning_path
 from courses.views import course_list, course_detail, lesson_detail, complete_lesson
 from games.views import game_list, game_detail, run_game_code
 from videos.views import video_list, mark_video_watched
+from pages.views import AboutView, FAQView, TermsView, PrivacyView, contact
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='accounts/index.html'), name='home'),
+    path('', home, name='home'),
     path('register/', register, name='register'),
     path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('logout/', user_logout, name='logout'),
@@ -44,6 +44,13 @@ urlpatterns = [
     path('games/<int:game_id>/run/', run_game_code, name='run_game_code'),
     path('videos/', video_list, name='video_list'),
     path('videos/<int:video_id>/watched/', mark_video_watched, name='video_mark_watched'),
+
+    path('about/', AboutView.as_view(), name='about'),
+    path('contact/', contact, name='contact'),
+    path('faq/', FAQView.as_view(), name='faq'),
+    path('terms/', TermsView.as_view(), name='terms'),
+    path('privacy/', PrivacyView.as_view(), name='privacy'),
+    path('blog/', include('blog.urls')),
 ]
 
 if settings.DEBUG:

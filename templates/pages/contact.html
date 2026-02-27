@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}تماس با ما - PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto space-y-10">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-white">تماس با ما</h1>
+            <p class="text-gray-300 mt-3">
+                پیشنهاد، مشکل یا ایده داری؟ همینجا بهمون پیام بده.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-900/70 border border-gray-700 rounded-3xl p-6">
+                <h2 class="text-xl font-bold text-white mb-2">راه‌های ارتباطی</h2>
+                <p class="text-gray-300">ایمیل: <span class="text-indigo-300 font-semibold">info@pyacademy.ir</span></p>
+                <p class="text-gray-300 mt-1">اینستاگرام: <span class="text-indigo-300 font-semibold">@pyacademy</span></p>
+                <p class="text-gray-400 text-sm mt-4">
+                    (این اطلاعات قابل تغییر است؛ قبل از انتشار عمومی تنظیمش می‌کنیم.)
+                </p>
+            </div>
+
+            <div class="bg-gray-900/70 border border-indigo-700/40 rounded-3xl p-6">
+                <h2 class="text-xl font-bold text-white mb-4">ارسال پیام سریع</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        <input name="name" required class="w-full p-4 rounded-2xl" placeholder="نام شما">
+                        <input name="contact" class="w-full p-4 rounded-2xl" placeholder="ایمیل یا شماره تماس (اختیاری)">
+                        <textarea name="message" required rows="5" class="w-full p-4 rounded-2xl" placeholder="پیام شما"></textarea>
+                        <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl">
+                            ارسال
+                        </button>
+                    </div>
+                </form>
+                <p class="text-gray-400 text-sm mt-3">
+                    فعلاً پیام‌ها داخل دیتابیس ذخیره می‌شوند تا بعداً سیستم ایمیل/پنل پیام‌ها را اضافه کنیم.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

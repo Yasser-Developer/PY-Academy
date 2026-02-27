@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}درباره PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto space-y-8">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white">درباره PY-Academy</h1>
+        <p class="text-gray-300 text-lg leading-relaxed">
+            PY-Academy یک پلتفرم آموزشی برای یادگیری پایتون است که مخصوص دانش‌آموزان طراحی شده: درس‌های کوتاه، بازی‌های کدینگ، ویدیوهای جمع‌وجور و سیستم XP برای انگیزه.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-900/70 border border-gray-700 rounded-3xl p-6">
+                <div class="text-4xl mb-3">🎯</div>
+                <h2 class="text-xl font-bold text-white mb-2">هدف</h2>
+                <p class="text-gray-300">
+                    ساختن عادت یادگیری روزانه و تبدیل برنامه‌نویسی به یک تجربه ساده و دوست‌داشتنی.
+                </p>
+            </div>
+            <div class="bg-gray-900/70 border border-gray-700 rounded-3xl p-6">
+                <div class="text-4xl mb-3">🧠</div>
+                <h2 class="text-xl font-bold text-white mb-2">روش</h2>
+                <p class="text-gray-300">
+                    ترکیب درس + تمرین + بازی + ویدیو؛ هر مرحله کوتاه و قابل انجام در زمان کم.
+                </p>
+            </div>
+            <div class="bg-gray-900/70 border border-gray-700 rounded-3xl p-6">
+                <div class="text-4xl mb-3">🏅</div>
+                <h2 class="text-xl font-bold text-white mb-2">انگیزه</h2>
+                <p class="text-gray-300">
+                    XP، سطح و لیدربورد کمک می‌کنند بچه‌ها پیشرفت را ببینند و ادامه بدهند.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gray-900/70 border border-indigo-700/40 rounded-3xl p-6">
+            <h2 class="text-2xl font-bold text-indigo-300 mb-2">شروع سریع</h2>
+            <p class="text-gray-300 mb-4">
+                اگر تازه شروع می‌کنی، بهترین نقطه برای شروع «مسیر یادگیری» است.
+            </p>
+            <a href="{% url 'learning_path' %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-3 rounded-2xl">
+                رفتن به مسیر یادگیری
+            </a>
+        </div>
+    </div>
+{% endblock %}
+

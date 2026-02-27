@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} - PY-Academy{% endblock %}
+{% block meta_description %}{% if post.excerpt %}{{ post.excerpt }}{% else %}{{ post.content|truncatechars:160 }}{% endif %}{% endblock %}
+
+{% block content %}
+    <article class="max-w-3xl mx-auto space-y-8">
+        <header class="space-y-4">
+            <a href="{% url 'blog_list' %}" class="text-indigo-300 hover:text-indigo-200 nav-link">
+                ← بازگشت به وبلاگ
+            </a>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white">
+                {{ post.title }}
+            </h1>
+            <div class="text-sm text-gray-400 flex items-center justify-between">
+                <span>تاریخ: {{ post.published_at|date:"Y/m/d" }}</span>
+                {% if post.author %}
+                    <span>نویسنده: {{ post.author.username }}</span>
+                {% endif %}
+            </div>
+        </header>
+
+        {% if post.cover_image_url %}
+            <div class="rounded-3xl overflow-hidden border border-gray-700 shadow-2xl">
+                <img src="{{ post.cover_image_url }}" alt="{{ post.title }}" class="w-full object-cover">
+            </div>
+        {% endif %}
+
+        <div class="bg-gray-900/60 border border-gray-700 rounded-3xl p-6 md:p-10 text-gray-200 leading-relaxed space-y-4">
+            {{ post.content|linebreaks }}
+        </div>
+
+        <div class="bg-gray-900/60 border border-indigo-700/30 rounded-3xl p-6">
+            <h2 class="text-xl font-bold text-indigo-300 mb-2">قدم بعدی</h2>
+            <p class="text-gray-300 mb-4">
+                اگر تازه شروع کردی، مسیر پیشنهادی ما را ببین و با یک دوره کوتاه شروع کن.
+            </p>
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'learning_path' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-full">مسیر یادگیری</a>
+                <a href="{% url 'course_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-full">دوره‌ها</a>
+            </div>
+        </div>
+    </article>
+{% endblock %}
+

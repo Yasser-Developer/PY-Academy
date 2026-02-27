@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}خطای سرور - PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="max-w-3xl mx-auto py-20 text-center space-y-6">
+        <div class="text-7xl font-extrabold text-red-300">500</div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white">یک خطا رخ داد</h1>
+        <p class="text-gray-300">
+            مشکلی پیش اومد. چند دقیقه دیگه دوباره تلاش کن.
+        </p>
+        <a href="{% url 'home' %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-2xl">
+            برگشت به خانه
+        </a>
+    </div>
+{% endblock %}
+
