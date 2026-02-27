@@ -1,76 +1,92 @@
 {% extends 'base.html' %}
 
-{% block title %}صفحه اصلی - PY-Academy{% endblock %}
+{% block title %}آموزش پایتون برای بچه‌ها - PY-Academy{% endblock %}
 
 {% block content %}
-    <div class="text-center py-16 md:py-24">
-        <h1 class="text-5xl md:text-8xl font-extrabold mb-8 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 bg-clip-text text-transparent animate-fade-in">
-            خوش آمدی به PY-Academy!
-        </h1>
-        
-        <p class="text-xl md:text-3xl mb-16 text-gray-200 max-w-4xl mx-auto animate-fade-in-up delay-200">
-            پایتون رو مثل بازی یاد بگیر: XP جمع کن، سطح بالا برو، با کلاس‌ت رقابت کن و مدال بگیر!
-        </p>
+    <div class="py-16 md:py-20 space-y-20">
+        <!-- هدر قهرمان -->
+        <section class="text-center max-w-5xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 bg-clip-text text-transparent animate-fade-in">
+                پایتون برای بچه‌ها، مثل یک بازی
+            </h1>
+            <p class="text-lg md:text-2xl mb-10 text-gray-200 max-w-3xl mx-auto animate-fade-in-up delay-200">
+                با درس‌های کوتاه، بازی‌های تعاملی و سیستم XP، هر روز فقط ۱۵ دقیقه کد بزن و حس «لِوِل‌آپ» واقعی بگیر.
+            </p>
 
-        <!-- دکمه‌های عملی -->
-        <div class="flex flex-col sm:flex-row gap-6 justify-center mb-24 animate-fade-in-up delay-400">
-            {% if user.is_authenticated %}
-                <a href="{% url 'course_list' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    شروع یادگیری و دوره‌ها
-                </a>
-                <a href="{% url 'dashboard' %}" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    داشبورد من
-                </a>
-            {% else %}
-                <a href="{% url 'register' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    همین حالا شروع کن (ثبت‌نام)
-                </a>
-                <a href="{% url 'login' %}" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-5 px-12 rounded-full text-xl shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    ورود
-                </a>
-            {% endif %}
-        </div>
-
-        <!-- بخش "چرا PY-Academy؟" با کارت‌های ویژگی -->
-        <h2 class="text-4xl font-bold text-center mb-12 text-white">
-            چرا PY-Academy؟
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-indigo-500 hover:shadow-2xl transition-all duration-300">
-                <div class="text-5xl text-indigo-400 mb-4">📈</div>
-                <h3 class="text-2xl font-bold text-white mb-4">سیستم XP و سطح</h3>
-                <p class="text-gray-300">
-                    با هر درس XP جمع کن و سطح بالا برو!
-                </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-400">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'learning_path' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-2xl transform hover:scale-105 transition-all duration-300">
+                        شروع مسیر یادگیری من
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-4 px-10 rounded-full text-lg shadow-xl transform hover:scale-105 transition-all duration-300">
+                        دیدن داشبورد و XP
+                    </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-2xl transform hover:scale-105 transition-all duration-300">
+                        شروع رایگان برای دانش‌آموز
+                    </a>
+                    <a href="{% url 'login' %}" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-4 px-10 rounded-full text-lg shadow-xl transform hover:scale-105 transition-all duration-300">
+                        قبلاً ثبت‌نام کردم
+                    </a>
+                {% endif %}
             </div>
+        </section>
 
-            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-purple-500 hover:shadow-2xl transition-all duration-300">
-                <div class="text-5xl text-purple-400 mb-4">🏆</div>
-                <h3 class="text-2xl font-bold text-white mb-4">رقابت کلاس</h3>
-                <p class="text-gray-300">
-                    با کلاس‌ت رقابت کن و بهترین باش!
-                </p>
-            </div>
+        <!-- چرا PY-Academy؟ -->
+        <section class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-white">
+                چرا PY-Academy برای بچه‌ها مناسب است؟
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-indigo-500 hover:shadow-2xl transition-all duration-300">
+                    <div class="text-5xl text-indigo-400 mb-4">📈</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">سیستم XP و سطح</h3>
+                    <p class="text-gray-300">
+                        هر درس و چالش، XP داره. بچه‌ها مثل بازی سطح بالا می‌رن و پیشرفتشون رو واضح می‌بینن.
+                    </p>
+                </div>
 
-            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-green-500 hover:shadow-2xl transition-all duration-300">
-                <div class="text-5xl text-green-400 mb-4">🎖️</div>
-                <h3 class="text-2xl font-bold text-white mb-4">مدال و جایزه</h3>
-                <p class="text-gray-300">
-                    مدال بگیر و جوایز واقعی برنده شو!
-                </p>
-            </div>
+                <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-purple-500 hover:shadow-2xl transition-all duration-300">
+                    <div class="text-5xl text-purple-400 mb-4">🎮</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">بازی‌های کدینگ</h3>
+                    <p class="text-gray-300">
+                        به‌جای حفظ کردن، با بازی و چالش، مفاهیم مثل حلقه، شرط و لیست رو یاد می‌گیرن.
+                    </p>
+                </div>
 
-            <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-yellow-500 hover:shadow-2xl transition-all duration-300">
-                <div class="text-5xl text-yellow-400 mb-4">🎮</div>
-                <h3 class="text-2xl font-bold text-white mb-4">آموزش با بازی</h3>
-                <p class="text-gray-300">
-                    چالش‌ها و بازی‌های کدینگ برای یادگیری بهتر!
-                </p>
+                <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-green-500 hover:shadow-2xl transition-all duration-300">
+                    <div class="text-5xl text-green-400 mb-4">🎥</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">ویدیوهای کوتاه</h3>
+                    <p class="text-gray-300">
+                        ویدیوهای فارسی و انگلیسی کوتاه، برای توضیح مفاهیم سخت به زبان ساده.
+                    </p>
+                </div>
+
+                <div class="bg-gray-800/70 backdrop-blur-md p-8 rounded-3xl border border-gray-700 shadow-xl hover:border-yellow-500 hover:shadow-2xl transition-all duration-300">
+                    <div class="text-5xl text-yellow-400 mb-4">🏅</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">لیدربورد و انگیزه</h3>
+                    <p class="text-gray-300">
+                        با دیدن رتبه خودشان در لیدربورد، انگیزه می‌گیرند که هر روز چند قدم جلو بروند.
+                    </p>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- برای والدین -->
+        <section class="max-w-5xl mx-auto bg-gray-900/70 border border-gray-700 rounded-3xl p-8 md:p-10 shadow-2xl">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-6">
+                برای والدین: هدف PY-Academy چیست؟
+            </h2>
+            <p class="text-gray-300 leading-relaxed mb-4">
+                هدف این پلتفرم این است که فرزند شما بدون ترس از «سخت بودن برنامه‌نویسی»، با یک مسیر ساده و بازی‌محور، پایتون را یاد بگیرد.
+                تمرکز ما روی ساختن عادت یادگیری روزانه است، نه فشار آوردن با تکالیف سنگین.
+            </p>
+            <p class="text-gray-300 leading-relaxed">
+                از همین حالا می‌توانید با یک حساب دانش‌آموزی شروع کنید، پیشرفت او را در داشبورد ببینید و اگر خواستید، بعداً کلاس‌ها و دوره‌های پیشرفته‌تر را هم فعال کنید.
+            </p>
+        </section>
     </div>
 
-    <!-- انیمیشن fade-in برای جذابیت -->
     <style>
         @keyframes fadeIn {
             from { opacity: 0; }

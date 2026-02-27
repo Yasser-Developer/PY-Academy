@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView
-from accounts.views import register, user_logout, dashboard, leaderboard
+from accounts.views import register, user_logout, dashboard, leaderboard, learning_path
 from courses.views import course_list, course_detail, lesson_detail, complete_lesson
 from games.views import game_list, game_detail, run_game_code
 from videos.views import video_list, mark_video_watched
@@ -34,6 +34,7 @@ urlpatterns = [
     path('logout/', user_logout, name='logout'),
     path('dashboard/', dashboard, name='dashboard'),  # داشبورد شخصی
     path('leaderboard/', leaderboard, name='leaderboard'),
+    path('learning-path/', learning_path, name='learning_path'),
     path('courses/', course_list, name='course_list'),
     path('courses/<int:course_id>/', course_detail, name='course_detail'),
     path('lessons/<int:lesson_id>/', lesson_detail, name='lesson_detail'),

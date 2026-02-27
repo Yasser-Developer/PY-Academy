@@ -49,3 +49,7 @@ def dashboard(request):
 def leaderboard(request):
     top_users = CustomUser.objects.order_by('-xp', 'username')[:10]
     return render(request, 'accounts/leaderboard.html', {'top_users': top_users})
+
+
+def learning_path(request):
+    return render(request, 'accounts/learning_path.html')

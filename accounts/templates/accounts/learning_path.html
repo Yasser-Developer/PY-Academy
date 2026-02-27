@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}مسیر یادگیری پایتون برای بچه‌ها - PY-Academy{% endblock %}
+
+{% block content %}
+    <div class="max-w-5xl mx-auto py-8 space-y-10">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+            مسیر پیشنهادی یادگیری در PY-Academy
+        </h1>
+        <p class="text-gray-300 text-lg">
+            این مسیر برای دانش‌آموزانی طراحی شده که می‌خواهند با روزی ۱۵ تا ۳۰ دقیقه تمرین، در چند هفته با پایتون راحت شوند.
+        </p>
+
+        <ol class="space-y-6">
+            <li class="bg-gray-900/70 border border-indigo-700/40 rounded-3xl p-6">
+                <h2 class="text-2xl font-bold text-indigo-300 mb-2">۱. ساخت حساب و آشنایی با داشبورد</h2>
+                <p class="text-gray-300 mb-3">
+                    اول یک حساب دانش‌آموزی بساز و وارد داشبورد شو. اینجا میزان XP، سطح فعلی و پیشرفت کلی‌ات را می‌بینی.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'register' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-full">
+                        ثبت‌نام رایگان
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="bg-gray-800 hover:bg-gray-700 text-white text-sm font-semibold px-4 py-2 rounded-full">
+                        رفتن به داشبورد
+                    </a>
+                </div>
+            </li>
+
+            <li class="bg-gray-900/70 border border-blue-700/40 rounded-3xl p-6">
+                <h2 class="text-2xl font-bold text-blue-300 mb-2">۲. شروع از دورهٔ مقدماتی پایتون</h2>
+                <p class="text-gray-300 mb-3">
+                    از لیست دوره‌ها، یک دورهٔ «پایتون مقدماتی برای بچه‌ها» انتخاب کن. هر درس کوتاه است و در پایان آن XP می‌گیری.
+                </p>
+                <p class="text-gray-400 text-sm mb-3">
+                    پیشنهاد: روزی حداقل یک درس را کامل کن تا هم XP بگیری هم یادت نرود.
+                </p>
+                <a href="{% url 'course_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-full">
+                    دیدن دوره‌ها
+                </a>
+            </li>
+
+            <li class="bg-gray-900/70 border border-green-700/40 rounded-3xl p-6">
+                <h2 class="text-2xl font-bold text-green-300 mb-2">۳. تقویت مفاهیم با بازی‌های کدینگ</h2>
+                <p class="text-gray-300 mb-3">
+                    بعد از چند درس، سر بزن به بخش بازی‌ها و یکی از بازی‌های کدینگ را انتخاب کن. اینجا همان چیزهایی که یاد گرفتی را در قالب چالش حل می‌کنی.
+                </p>
+                <a href="{% url 'game_list' %}" class="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-full">
+                    رفتن به بازی‌ها
+                </a>
+            </li>
+
+            <li class="bg-gray-900/70 border border-purple-700/40 rounded-3xl p-6">
+                <h2 class="text-2xl font-bold text-purple-300 mb-2">۴. دیدن ویدیوهای کوتاه برای درک عمیق‌تر</h2>
+                <p class="text-gray-300 mb-3">
+                    برای هر موضوع سخت، یک ویدیوی کوتاه ببین. بعد از تماشا، با دکمه «دیدم» XP آن ویدیو را بگیر.
+                </p>
+                <a href="{% url 'video_list' %}" class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold px-4 py-2 rounded-full">
+                    لیست ویدیوها
+                </a>
+            </li>
+
+            <li class="bg-gray-900/70 border border-yellow-700/40 rounded-3xl p-6">
+                <h2 class="text-2xl font-bold text-yellow-300 mb-2">۵. چک کردن رتبه در لیدربورد و ادامه دادن مسیر</h2>
+                <p class="text-gray-300 mb-3">
+                    هر چند روز یک‌بار، لیدربورد را نگاه کن و ببین با بقیه در چه سطحی هستی. اگر می‌خواهی بالا بروی، درس، بازی و ویدیوهای بیشتری انجام بده.
+                </p>
+                <a href="{% url 'leaderboard' %}" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 text-sm font-semibold px-4 py-2 rounded-full">
+                    دیدن لیدربورد
+                </a>
+            </li>
+        </ol>
+
+        <p class="text-gray-400 text-sm">
+            این مسیر فقط یک پیشنهاد است؛ تو می‌توانی بسته به علاقه‌ات از هر کجا که دوست داری شروع کنی، اما اگر دنبال یک برنامهٔ منظم هستی، از بالا به پایین برو.
+        </p>
+    </div>
+{% endblock %}
+
